@@ -11,45 +11,58 @@ import PerfectHTTP
 import MySQL
 import PerfectLib  //Log
 
+public enum UserErrorType: Int{
+    case userNotExsit = 305
+    case userIsExsit = 306
+    
+    public var description: String {
+        switch self {
+        case .userNotExsit	: return "用户不存在"
+        case .userIsExsit   : return "用户已存在"
+        }
+    }
+}
+
+public class UserInfoConstans{
+    class var userTale: String{
+        get {
+            return "UserInfo"
+        }
+    }
+}
+
 
 class GetUserInfoHandler{
     
     class func getUserInfo(_ request: HTTPRequest, response: HTTPResponse){
-        
-        Log.info(message: "\(Date()): 用户信息请求开始")
         
         var dict = NSMutableDictionary()
         
         defer {
             let tee = Funcs.dicToJsonStr(dict)
             response.appendBody(string: tee)
-            Log.info(message: "\(Date()): 用户信息请求结束")
         }
         
         //检查参数
         dict = Funcs.checkParas(request, response: response, acceptPara: ["uid"])
         guard dict.count == 0 else {
-            Log.info(message: "Failure : 参数错误: " + String(dict.value(forKey: "code") as! Int))
-            Log.info(message: "Failure : \(request.queryParams)")
             return
         }
         
         //检查之后
-        let statement = "select * from UserInfo where " + Funcs.getQuery(request)
         let iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
-        
         //方法执行完后，需要调用
         defer {
-            Log.info(message: "\(Date()): 数据库连接关闭")
-            iPetsConnector.mysql.close()
+            iPetsConnector.closeConnect()
         }
         
         //数据库连接成功
         if iPetsConnector.success{    // 确保执行的语句正确
+            
             let mysql = iPetsConnector.mysql!
+            let statement = "select * from \(UserInfoConstans.userTale) where " + Funcs.getQuery(request)
             Log.info(message: "\(Date()): 执行请求 "+statement)
             
-            //执行操作，可能失败
             guard mysql.query(statement: statement) else {
                 Log.info(message: "Failure: \(mysql.errorCode()) \(mysql.errorMessage())")
                 Funcs.setDBErrorResponse(response, dict: dict)
@@ -58,8 +71,16 @@ class GetUserInfoHandler{
             
             // 获取返回的数据
             let results = mysql.storeResults()!
-            let resultArray = self.progressData(results)
             
+            //如果没有
+            if results.numRows() == 0{
+                Log.info(message: "查询失败: 用户不存在")
+                dict = UserFuncs.setUserExsitError(UserErrorType.userNotExsit, response: response)
+                return
+            }
+            
+            //有数据
+            let resultArray = self.progressData(results)
             Funcs.setOKResponse(response, dict: dict, resultArray: resultArray)
             
         }else{

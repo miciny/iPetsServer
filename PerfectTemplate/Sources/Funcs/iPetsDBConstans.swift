@@ -68,6 +68,14 @@ class iPetsDBConnector{
         }
     }
     
+    func closeConnect(){
+        
+        if mysql != nil{
+            Log.info(message: "\(Date()): 数据库连接关闭")
+            mysql.close()
+        }
+    }
+    
     //连接数据库
     private func connectToDB() -> Bool{
         if mysql == nil{

@@ -16,7 +16,11 @@ public class iPetsRoutes{
         do{
             try routes.add(method: .get, uri: "/", handler: iPetsHandlers.indexHandler())
             try routes.add(method: .get, uri: "/index", handler: iPetsHandlers.indexHandler())
-            try routes.add(method: .get, uri: "/userinfo", handler: iPetsHandlers.userInfoHandler())
+            
+            try routes.add(method: .get, uri: "/userinfo", handler: iPetsHandlers.getUserInfoHandler())
+            
+            try routes.add(method: .get, uri: "/register", handler: iPetsHandlers.registerUserHandler())
+            
         }catch {
             print(error)
         }

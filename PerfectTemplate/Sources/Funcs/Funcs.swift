@@ -8,6 +8,7 @@
 
 import Foundation
 import PerfectHTTP
+import PerfectLib
 
 public enum ParaErrorType: Int{
     case unacceptablePara = 302 //参数名错误
@@ -27,6 +28,7 @@ public enum ParaErrorType: Int{
 
 class Funcs: NSObject {
     
+//===================================功能=======================
     //字典转为json格式的字符串
     class func dicToJsonStr(_ dic: NSMutableDictionary) -> String{
         let dataArray = dic
@@ -60,40 +62,6 @@ class Funcs: NSObject {
         return json
     }
     
-    //正常
-    class func setOKResponse(_ response: HTTPResponse, dict: NSMutableDictionary, resultArray: NSMutableArray){
-        
-        response.status = HTTPResponseStatus.ok
-        dict.setValue("true", forKey: "success")
-        dict.setValue(HTTPResponseStatus.ok.description, forKey: "code")
-        dict.setValue(resultArray, forKey: "data")
-    }
-    
-    
-    //数据库连接出错，设置
-    class func setDBErrorResponse(_ response: HTTPResponse, dict: NSMutableDictionary){
-        
-        response.status = HTTPResponseStatus.serviceUnavailable
-        dict.setValue("false", forKey: "success")
-        dict.setValue(HTTPResponseStatus.serviceUnavailable.description, forKey: "code")
-        dict.setValue("连接数据库出错", forKey: "message")
-    }
-    
-    
-    
-    //参数错误
-    class func setErrorData(_ error: ParaErrorType, response: HTTPResponse) -> NSMutableDictionary{
-        
-        let dict = NSMutableDictionary()
-        
-        dict.setValue("false", forKey: "success")
-        dict.setValue(error.rawValue, forKey: "code")
-        dict.setValue(error.description, forKey: "message")
-        
-        response.status = HTTPResponseStatus.badRequest
-        return dict
-    }
-    
     //返回一个查询语句的where
     class func getQuery(_ request: HTTPRequest) -> String{
         
@@ -110,34 +78,87 @@ class Funcs: NSObject {
         return str
     }
     
+
+//===================================成功的数据 或者是提示=======================
+    //正常
+    class func setOKResponse(_ response: HTTPResponse, dict: NSMutableDictionary, resultArray: NSMutableArray){
+        
+        response.status = HTTPResponseStatus.ok
+        dict.setValue("true", forKey: "success")
+        dict.setValue(HTTPResponseStatus.ok.description, forKey: "code")
+        dict.setValue(resultArray, forKey: "data")
+    }
     
+    //正常
+    class func setOKMessage(_ response: HTTPResponse, dict: NSMutableDictionary, str: String){
+        
+        response.status = HTTPResponseStatus.ok
+        dict.setValue("true", forKey: "success")
+        dict.setValue(HTTPResponseStatus.ok.description, forKey: "code")
+        dict.setValue(str, forKey: "message")
+    }
+    
+    
+    
+//===================================错误=======================
+    //数据库连接出错，设置
+    class func setDBErrorResponse(_ response: HTTPResponse, dict: NSMutableDictionary){
+        
+        response.status = HTTPResponseStatus.serviceUnavailable
+        dict.setValue("false", forKey: "success")
+        dict.setValue(HTTPResponseStatus.serviceUnavailable.description, forKey: "code")
+        dict.setValue("连接数据库出错", forKey: "message")
+    }
+    
+    
+    //参数错误
+    class func setParaErrorData(_ error: ParaErrorType, response: HTTPResponse) -> NSMutableDictionary{
+        
+        let dict = NSMutableDictionary()
+        
+        dict.setValue("false", forKey: "success")
+        dict.setValue(error.rawValue, forKey: "code")
+        dict.setValue(error.description, forKey: "message")
+        
+        response.status = HTTPResponseStatus.badRequest
+        return dict
+    }
+    
+//===================================检查=======================
     //检查参数
     class func checkParas(_ request: HTTPRequest, response: HTTPResponse, acceptPara: [String]) -> NSMutableDictionary{
         var dataArray = NSMutableDictionary()
         
         let pCount = request.params().count
         
+        
+        defer {
+            if dataArray.count != 0{
+                Log.info(message: "Failure : 参数错误: " + String(dataArray.value(forKey: "code") as! Int))
+                Log.info(message: "Failure : \(request.queryParams)")
+            }
+        }
+        
         //如果参数数量错误
         if pCount != acceptPara.count{
-            dataArray = Funcs.setErrorData(ParaErrorType.lessPara, response: response)
+            dataArray = Funcs.setParaErrorData(ParaErrorType.lessPara, response: response)
             return dataArray
         }
         
         for para in request.params(){
             //如果参数有错误 返回
             if !acceptPara.contains(para.0){
-                dataArray = Funcs.setErrorData(ParaErrorType.unacceptablePara, response: response)
+                dataArray = Funcs.setParaErrorData(ParaErrorType.unacceptablePara, response: response)
                 return dataArray
             }
             
             //参数为空，返回
             if para.1 == ""{
-                dataArray = Funcs.setErrorData(ParaErrorType.badPara, response: response)
+                dataArray = Funcs.setParaErrorData(ParaErrorType.badPara, response: response)
                 return dataArray
             }
         }
         
         return dataArray
     }
-
 }
