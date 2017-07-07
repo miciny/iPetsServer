@@ -14,9 +14,9 @@ import MySQL
 import PerfectLib  //Log
 
 
-class ResigsterAcountHandler{
+class ResigsterAccountHandler{
     
-    class func resigsterAcount(_ request: HTTPRequest, response: HTTPResponse){
+    class func resigsterAccount(_ request: HTTPRequest, response: HTTPResponse){
         
         var dict = NSMutableDictionary()
         

@@ -41,7 +41,7 @@ public class iPetsHandlers{
         return {
             request, response in
             Log.info(message: "\(Date()): 注册用户请求开始")
-            ResigsterAcountHandler.resigsterAcount(request, response: response)
+            ResigsterAccountHandler.resigsterAccount(request, response: response)
             response.completed()
             Log.info(message: "\(Date()): 注册用户请求结束")
         }
