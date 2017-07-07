@@ -1,0 +1,5 @@
+version: "Apple Swift version 3.1 (swiftlang-802.0.53 clang-802.0.42)"
+options: "d0185c971f763176add937f8916e2f57"
+build_time: [552558428, 817800000]
+inputs:
+  "/Users/miciny/ToGitHub/iPetsServer/Sources/main.swift": [551143176, 0]

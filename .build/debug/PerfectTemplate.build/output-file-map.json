@@ -1,0 +1,11 @@
+{
+  "": {
+    "swift-dependencies": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectTemplate.build/master.swiftdeps"
+  },
+  "/Users/miciny/ToGitHub/iPetsServer/Sources/main.swift": {
+    "dependencies": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectTemplate.build/main.d",
+    "object": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectTemplate.build/main.swift.o",
+    "swiftmodule": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectTemplate.build/main~partial.swiftmodule",
+    "swift-dependencies": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectTemplate.build/main.swiftdeps"
+  }
+}

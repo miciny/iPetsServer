@@ -1,0 +1,14 @@
+version: "Apple Swift version 3.1 (swiftlang-802.0.53 clang-802.0.42)"
+options: "7baf13b480c30a7d9d2b72bfee3f3eca"
+build_time: [552558405, 592248000]
+inputs:
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/PerfectLib.git-3712999737848873669/Sources/PerfectLib/Bytes.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/PerfectLib.git-3712999737848873669/Sources/PerfectLib/Dir.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/PerfectLib.git-3712999737848873669/Sources/PerfectLib/File.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/PerfectLib.git-3712999737848873669/Sources/PerfectLib/JSONConvertible.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/PerfectLib.git-3712999737848873669/Sources/PerfectLib/Log.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/PerfectLib.git-3712999737848873669/Sources/PerfectLib/PerfectError.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/PerfectLib.git-3712999737848873669/Sources/PerfectLib/PerfectServer.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/PerfectLib.git-3712999737848873669/Sources/PerfectLib/SwiftCompatibility.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/PerfectLib.git-3712999737848873669/Sources/PerfectLib/SysProcess.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/PerfectLib.git-3712999737848873669/Sources/PerfectLib/Utilities.swift": [552555200, 0]

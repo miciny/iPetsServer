@@ -1,0 +1,23 @@
+{
+  "": {
+    "swift-dependencies": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/master.swiftdeps"
+  },
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Thread.git-6541237758607105655/Sources/Promise.swift": {
+    "dependencies": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/Promise.d",
+    "object": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/Promise.swift.o",
+    "swiftmodule": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/Promise~partial.swiftmodule",
+    "swift-dependencies": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/Promise.swiftdeps"
+  },
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Thread.git-6541237758607105655/Sources/Threading.swift": {
+    "dependencies": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/Threading.d",
+    "object": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/Threading.swift.o",
+    "swiftmodule": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/Threading~partial.swiftmodule",
+    "swift-dependencies": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/Threading.swiftdeps"
+  },
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Thread.git-6541237758607105655/Sources/ThreadQueue.swift": {
+    "dependencies": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/ThreadQueue.d",
+    "object": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/ThreadQueue.swift.o",
+    "swiftmodule": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/ThreadQueue~partial.swiftmodule",
+    "swift-dependencies": "/Users/miciny/ToGitHub/iPetsServer/.build/debug/PerfectThread.build/ThreadQueue.swiftdeps"
+  }
+}

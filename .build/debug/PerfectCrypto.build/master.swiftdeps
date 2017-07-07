@@ -1,0 +1,11 @@
+version: "Apple Swift version 3.1 (swiftlang-802.0.53 clang-802.0.42)"
+options: "1bdbe5e2def472c7fcb4421d1d3738fb"
+build_time: [552558411, 125117000]
+inputs:
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Crypto.git--5196635702121641122/Sources/Algorithms.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Crypto.git--5196635702121641122/Sources/ByteIO.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Crypto.git--5196635702121641122/Sources/Extensions.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Crypto.git--5196635702121641122/Sources/JWT.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Crypto.git--5196635702121641122/Sources/Keys.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Crypto.git--5196635702121641122/Sources/OpenSSLInternal.swift": [552555200, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Crypto.git--5196635702121641122/Sources/PerfectCrypto.swift": [552555200, 0]

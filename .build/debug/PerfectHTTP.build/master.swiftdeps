@@ -1,0 +1,13 @@
+version: "Apple Swift version 3.1 (swiftlang-802.0.53 clang-802.0.42)"
+options: "cd903d32c55ddb54adc779bf0694614f"
+build_time: [552558423, 489988000]
+inputs:
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-HTTP.git--6392294032632002019/Sources/HTTPFilter.swift": [552555199, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-HTTP.git--6392294032632002019/Sources/HTTPHeaders.swift": [552555199, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-HTTP.git--6392294032632002019/Sources/HTTPMethod.swift": [552555199, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-HTTP.git--6392294032632002019/Sources/HTTPRequest.swift": [552555199, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-HTTP.git--6392294032632002019/Sources/HTTPResponse.swift": [552555199, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-HTTP.git--6392294032632002019/Sources/MimeReader.swift": [552555199, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-HTTP.git--6392294032632002019/Sources/MimeType.swift": [552555199, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-HTTP.git--6392294032632002019/Sources/Routing.swift": [552555199, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-HTTP.git--6392294032632002019/Sources/StaticFileHandler.swift": [552555199, 0]

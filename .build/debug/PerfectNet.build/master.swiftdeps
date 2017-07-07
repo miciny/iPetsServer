@@ -1,0 +1,11 @@
+version: "Apple Swift version 3.1 (swiftlang-802.0.53 clang-802.0.42)"
+options: "304743097c3f826f5419d4bec9dd047c"
+build_time: [552558412, 714757000]
+inputs:
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Net.git-3268755499654502659/Sources/Net.swift": [552555198, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Net.git-3268755499654502659/Sources/NetAddress.swift": [552555198, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Net.git-3268755499654502659/Sources/NetEvent.swift": [552555198, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Net.git-3268755499654502659/Sources/NetNamedPipe.swift": [552555198, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Net.git-3268755499654502659/Sources/NetTCP.swift": [552555198, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Net.git-3268755499654502659/Sources/NetTCPSSL.swift": [552555198, 0]
+  "/Users/miciny/ToGitHub/iPetsServer/.build/checkouts/Perfect-Net.git-3268755499654502659/Sources/NetUDP.swift": [552555198, 0]
