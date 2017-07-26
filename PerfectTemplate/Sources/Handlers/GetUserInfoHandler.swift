@@ -11,26 +11,6 @@ import PerfectHTTP
 import MySQL
 import PerfectLib  //Log
 
-public enum UserErrorType: Int{
-    case userNotExsit = 305
-    case userIsExsit = 306
-    
-    public var description: String {
-        switch self {
-        case .userNotExsit	: return "用户不存在"
-        case .userIsExsit   : return "用户已存在"
-        }
-    }
-}
-
-public class UserInfoConstans{
-    class var userTale: String{
-        get {
-            return "UserInfo"
-        }
-    }
-}
-
 
 class GetUserInfoHandler{
     
