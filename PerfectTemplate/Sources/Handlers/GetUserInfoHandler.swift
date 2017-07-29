@@ -40,11 +40,9 @@ class GetUserInfoHandler{
         if iPetsConnector.success{    // 确保执行的语句正确
             
             let mysql = iPetsConnector.mysql!
-            let statement = "select * from \(UserInfoConstans.userTale) where " + Funcs.getQuery(request)
-            Log.info(message: "\(Date()): 执行请求 "+statement)
+            let statement = "select * from \(UserInfoConstans.userTable) where " + Funcs.getQuery_And(request)
             
-            guard mysql.query(statement: statement) else {
-                Log.info(message: "Failure: \(mysql.errorCode()) \(mysql.errorMessage())")
+            guard iPetsConnector.excuse(query: statement) else {
                 Funcs.setDBErrorResponse(response, dict: dict)
                 return
             }
@@ -58,7 +56,7 @@ class GetUserInfoHandler{
                 dict = UserFuncs.setUserExsitError(UserErrorType.userNotExsit, response: response)
                 return
             }
-            
+
             //有数据
             let resultArray = self.progressData(results)
             Funcs.setOKResponse(response, dict: dict, resultArray: resultArray)

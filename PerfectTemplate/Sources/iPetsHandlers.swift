@@ -35,6 +35,17 @@ public class iPetsHandlers{
         }
     }
     
+    //获取用户好友列表
+    open static func getUserFriendsListHandler() throws -> RequestHandler {
+        return {
+            request, response in
+            Log.info(message: "\(Date()): 用户好友列表请求开始")
+            GetUserFriendsListHandler.getUserFriendsList(request, response: response)
+            response.completed()
+            Log.info(message: "\(Date()): 用户好友列表请求结束")
+        }
+    }
+    
     
     //注册用户
     open static func registerUserHandler() throws -> RequestHandler {
@@ -44,6 +55,18 @@ public class iPetsHandlers{
             ResigsterAccountHandler.resigsterAccount(request, response: response)
             response.completed()
             Log.info(message: "\(Date()): 注册用户请求结束")
+        }
+    }
+    
+    
+    //朋友圈
+    open static func getUserFriendsCircleHandler() throws -> RequestHandler {
+        return {
+            request, response in
+            Log.info(message: "\(Date()): 朋友圈请求开始")
+            GetUserFriendsCircleHandler.getFriendsCircle(request, response: response)
+            response.completed()
+            Log.info(message: "\(Date()): 朋友圈请求结束")
         }
     }
     

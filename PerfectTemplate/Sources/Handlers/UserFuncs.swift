@@ -22,7 +22,7 @@ public enum UserErrorType: Int{
 }
 
 public class UserInfoConstans{
-    class var userTale: String{
+    class var userTable: String{
         get {
             return "UserInfo"
         }

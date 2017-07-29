@@ -63,7 +63,7 @@ class Funcs: NSObject {
     }
     
     //返回一个查询语句的where
-    class func getQuery(_ request: HTTPRequest) -> String{
+    class func getQuery_And(_ request: HTTPRequest) -> String{
         
         let paras = request.params()
         let parasCount = paras.count
@@ -78,15 +78,44 @@ class Funcs: NSObject {
         return str
     }
     
+    
+    class func getQuery_Or(data: NSMutableArray, fieldName: String) -> String{
+        var str = ""
+        
+        for i in 0 ..< data.count{
+            let d = data[i] as! String
+            str += fieldName + "=" + d
+            
+            if i != data.count-1{
+                str += " or "
+            }
+        }
+        
+        return str
+    }
+    
+    //字符串转为时间
+    class func stringToDate(_ string: String, format: String) -> Date {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        // String to Date
+        return dateFormatter.date(from: string)!
+    }
+    
 
 //===================================成功的数据 或者是提示=======================
     //正常
-    class func setOKResponse(_ response: HTTPResponse, dict: NSMutableDictionary, resultArray: NSMutableArray){
+    class func setOKResponse(_ response: HTTPResponse, dict: NSMutableDictionary, resultArray: NSMutableArray?){
         
         response.status = HTTPResponseStatus.ok
         dict.setValue("true", forKey: "success")
         dict.setValue(HTTPResponseStatus.ok.description, forKey: "code")
-        dict.setValue(resultArray, forKey: "data")
+        if let resultArray = resultArray{
+            dict.setValue(resultArray, forKey: "data")
+        }else{
+            dict.setValue("[]", forKey: "data")
+        }
     }
     
     //正常

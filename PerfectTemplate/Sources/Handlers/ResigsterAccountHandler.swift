@@ -16,6 +16,8 @@ import PerfectLib  //Log
 
 class ResigsterAccountHandler{
     
+    static var iPetsConnector: iPetsDBConnector?
+    
     class func resigsterAccount(_ request: HTTPRequest, response: HTTPResponse){
         
         var dict = NSMutableDictionary()
@@ -32,15 +34,15 @@ class ResigsterAccountHandler{
         }
         
         //检查之后
-        let iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
+        iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
         //方法执行完后，需要调用
         defer {
-            iPetsConnector.closeConnect()
+            iPetsConnector!.closeConnect()
         }
         
         //数据库连接成功
-        if iPetsConnector.success{    // 确保执行的语句正确
-            let mysql = iPetsConnector.mysql!
+        if iPetsConnector!.success{    // 确保执行的语句正确
+            let mysql = iPetsConnector!.mysql!
             
             //检查是否已存在
             let nickname = request.params(named: "nickname")[0]
@@ -53,10 +55,9 @@ class ResigsterAccountHandler{
             //插入数据
             let name = request.params(named: "name")[0]
             let pw = request.params(named: "pw")[0]
-            let statement = "INSERT INTO \(UserInfoConstans.userTale) SET nickname=\"\(nickname)\", name=\"\(name)\", pw=\"\(pw)\", regist_time=NOW()"
-            Log.info(message: "\(Date()): 执行请求 "+statement)
-            guard mysql.query(statement: statement) else {
-                Log.info(message: "Failure: \(mysql.errorCode()) \(mysql.errorMessage())")
+            let statement = "INSERT INTO \(UserInfoConstans.userTable) SET nickname=\"\(nickname)\", name=\"\(name)\", pw=\"\(pw)\", regist_time=NOW()"
+            
+            guard iPetsConnector!.excuse(query: statement) else {
                 Funcs.setDBErrorResponse(response, dict: dict)
                 return
             }
@@ -74,11 +75,9 @@ class ResigsterAccountHandler{
     private class func checkUserNickNameIsExsit(mysql: MySQL, nikcname: String, response: HTTPResponse) -> Bool{
         var exist = false
         let statement = "select * from UserInfo where nickname='" + nikcname + "'"
-        Log.info(message: "\(Date()): 执行请求 " + statement)
         
         //执行操作，可能失败
-        guard mysql.query(statement: statement) else {
-            Log.info(message: "Failure: \(mysql.errorCode()) \(mysql.errorMessage())")
+        guard iPetsConnector!.excuse(query: statement) else {
             return exist
         }
         

@@ -10,6 +10,7 @@ import Foundation
 import PerfectHTTP
 import MySQL
 import PerfectLib  //Log
+//import PerfectSessionMySQL
 
 //==================================常量=========================
 class iPetsDBConnectConstans{
@@ -74,6 +75,18 @@ class iPetsDBConnector{
             Log.info(message: "\(Date()): 数据库连接关闭")
             mysql.close()
         }
+    }
+    
+    func excuse(query: String) -> Bool{
+        
+        Log.info(message: "\(Date()): 执行请求 "+query)
+        
+        guard mysql.query(statement: query) else {
+            Log.info(message: "Failure: \(mysql.errorCode()) \(mysql.errorMessage())")
+            return false
+        }
+        
+        return true
     }
     
     //连接数据库

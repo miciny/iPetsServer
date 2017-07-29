@@ -22,12 +22,15 @@ public class iPetsRoutes{
             
             //获取用户信息
             try routes.add(method: .get, uri: "/userinfo", handler: iPetsHandlers.getUserInfoHandler())
-            
-            
             //注册
             try routes.add(method: .get, uri: "/register", handler: iPetsHandlers.registerUserHandler())
             
-            //
+            //朋友圈
+            try routes.add(method: .get, uri: "/friends/circle", handler: iPetsHandlers.getUserFriendsCircleHandler())
+            //好友列表
+            try routes.add(method: .get, uri: "/friends/list", handler: iPetsHandlers.getUserFriendsListHandler())
+            
+            
             
         }catch {
             print(error)
