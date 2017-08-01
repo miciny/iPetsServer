@@ -70,4 +70,17 @@ public class iPetsHandlers{
         }
     }
     
+    
+    
+    //人工智能训练
+    open static func startTrainingHandler() throws -> RequestHandler {
+        return {
+            request, response in
+            Log.info(message: "\(Date()): 人工智能训练请求开始")
+            MNISTTrain.startTraining()
+            response.completed()
+            Log.info(message: "\(Date()): 人工智能训练请求结束")
+        }
+    }
+    
 }

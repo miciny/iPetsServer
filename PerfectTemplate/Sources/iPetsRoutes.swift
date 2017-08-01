@@ -32,6 +32,12 @@ public class iPetsRoutes{
             
             
             
+            
+            
+            //人工智能 开始训练
+            try routes.add(method: .get, uri: "/mcyAI/startTraining", handler: iPetsHandlers.startTrainingHandler())
+            
+            
         }catch {
             print(error)
         }

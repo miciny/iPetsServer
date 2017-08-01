@@ -28,6 +28,17 @@ public enum ParaErrorType: Int{
 
 class Funcs: NSObject {
     
+    
+//===================================功能=======================
+    //获取路径
+    class func getDeskPath() -> AnyObject{
+        let deskPaths = NSSearchPathForDirectoriesInDomains(.desktopDirectory, .userDomainMask, true)
+        let deskPath = deskPaths[0]
+        return deskPath as AnyObject
+    }
+    
+    
+    
 //===================================功能=======================
     //字典转为json格式的字符串
     class func dicToJsonStr(_ dic: NSMutableDictionary) -> String{

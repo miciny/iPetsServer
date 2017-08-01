@@ -24,7 +24,7 @@ let package = Package(
 	targets: [],
 	dependencies: [
 		.Package(url: "https://github.com/PerfectlySoft/Perfect-HTTPServer.git", majorVersion: 2),
-        .Package(url: "https://github.com/PerfectlySoft/Perfect-MySQL.git", majorVersion: 2, minor: 0),
-		.Package(url: "https://github.com/Swift-AI/NeuralNet.git", majorVersion: 0, minor: 3)
+		.Package(url: "https://github.com/Swift-AI/NeuralNet.git", majorVersion: 0, minor: 3),
+        .Package(url: "https://github.com/PerfectlySoft/Perfect-MySQL.git", majorVersion: 2, minor: 0)
     ]
 )
