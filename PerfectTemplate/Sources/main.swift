@@ -28,8 +28,9 @@ server.addRoutes(route)
 server.serverPort = 8181
 
 do {
-	try  server.start()
+    try  server.start()
 } catch {
-	fatalError("\(error)") // fatal error launching one of the servers
+    fatalError("\(error)") // fatal error launching one of the servers
 }
+
 
