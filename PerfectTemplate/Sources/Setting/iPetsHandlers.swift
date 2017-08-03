@@ -24,6 +24,7 @@ public class iPetsHandlers{
     }
     
     
+//===================================USER==================================================
     //获取用户信息
     open static func getUserInfoHandler() throws -> RequestHandler {
         return {
@@ -32,17 +33,6 @@ public class iPetsHandlers{
             GetUserInfoHandler.getUserInfo(request, response: response)
             response.completed()
             Log.info(message: "\(Date()): 用户信息请求结束")
-        }
-    }
-    
-    //获取用户好友列表
-    open static func getUserFriendsListHandler() throws -> RequestHandler {
-        return {
-            request, response in
-            Log.info(message: "\(Date()): 用户好友列表请求开始")
-            GetUserFriendsListHandler.getUserFriendsList(request, response: response)
-            response.completed()
-            Log.info(message: "\(Date()): 用户好友列表请求结束")
         }
     }
     
@@ -59,6 +49,7 @@ public class iPetsHandlers{
     }
     
     
+//===================================FRIENDS==================================================
     //朋友圈
     open static func getUserFriendsCircleHandler() throws -> RequestHandler {
         return {
@@ -70,16 +61,51 @@ public class iPetsHandlers{
         }
     }
     
+    //获取用户好友列表
+    open static func getUserFriendsListHandler() throws -> RequestHandler {
+        return {
+            request, response in
+            Log.info(message: "\(Date()): 用户好友列表请求开始")
+            GetUserFriendsListHandler.getUserFriendsList(request, response: response)
+            response.completed()
+            Log.info(message: "\(Date()): 用户好友列表请求结束")
+        }
+    }
     
+    
+    
+    
+    
+//===================================AI==================================================
     
     //人工智能训练
     open static func startTrainingHandler() throws -> RequestHandler {
         return {
             request, response in
             Log.info(message: "\(Date()): 人工智能训练请求开始")
-            MNISTTrain.startTraining()
+            MNISTTrainHandler.startTraining(request, response: response)
             response.completed()
             Log.info(message: "\(Date()): 人工智能训练请求结束")
+        }
+    }
+    //人工智能设置数据
+    open static func startSetDataHandler() throws -> RequestHandler {
+        return {
+            request, response in
+            Log.info(message: "\(Date()): 人工智能设置数据请求开始")
+            MNISTSetDataToDBHandler.startSetData(request, response: response)
+            response.completed()
+            Log.info(message: "\(Date()): 人工智能设置数据请求结束")
+        }
+    }
+    //人工智能上传训练数据
+    open static func receiveTrainDataHandler() throws -> RequestHandler {
+        return {
+            request, response in
+            Log.info(message: "\(Date()): 人工智能上传训练数据请求开始")
+            MNISTReceiveDataHandler.receiveData(request, response: response)
+            response.completed()
+            Log.info(message: "\(Date()): 人工智能上传训练数据请求结束")
         }
     }
     

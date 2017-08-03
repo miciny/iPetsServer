@@ -58,10 +58,13 @@ class MNISTManager {
     init(directory: String, pixelRange: (min: Float, max: Float), batchSize: Int) throws {
         // Cache training images
         trainImages = try MNISTManager.extractImages(from: .trainImages, directory: directory, range: pixelRange, batchSize: batchSize)
+        
         // Cache training labels
         trainLabels = try MNISTManager.extractLabels(from: .trainLabels, directory: directory, batchSize: batchSize)
+        
         // Cache validation images
         validationImages = try MNISTManager.extractImages(from: .validationImages, directory: directory, range: pixelRange, batchSize: batchSize)
+        
         // Cache validation labels
         validationLabels = try MNISTManager.extractLabels(from: .validationLabels, directory: directory, batchSize: batchSize)
     }

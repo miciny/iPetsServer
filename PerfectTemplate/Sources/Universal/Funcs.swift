@@ -56,6 +56,19 @@ class Funcs: NSObject {
         return str
     }
     
+    class func jsonToDic(jsonStr: String) -> NSDictionary?{
+        let jsonData = jsonStr.data(using: String.Encoding.utf8)
+        do {
+            let dic = try JSONSerialization.jsonObject(with: jsonData!, options: .mutableContainers)
+            return dic as? NSDictionary
+            
+        }catch{
+            print("json数据转为字典数据失败！")
+            print(error)
+            return nil
+        }
+    }
+    
     //字符串转成json
     class func strToJson(_ str: String) -> AnyObject{
         
@@ -138,6 +151,15 @@ class Funcs: NSObject {
         dict.setValue(str, forKey: "message")
     }
     
+    //失败
+    class func setFailMessage(_ response: HTTPResponse, dict: NSMutableDictionary, str: String){
+        
+        response.status = HTTPResponseStatus.ok
+        dict.setValue("false", forKey: "success")
+        dict.setValue(HTTPResponseStatus.badRequest.description, forKey: "code")
+        dict.setValue(str, forKey: "message")
+    }
+    
     
     
 //===================================错误=======================
@@ -165,6 +187,7 @@ class Funcs: NSObject {
     }
     
 //===================================检查=======================
+    
     //检查参数
     class func checkParas(_ request: HTTPRequest, response: HTTPResponse, acceptPara: [String]) -> NSMutableDictionary{
         var dataArray = NSMutableDictionary()
