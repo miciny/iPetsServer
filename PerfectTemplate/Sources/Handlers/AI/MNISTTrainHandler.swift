@@ -42,10 +42,10 @@ public class MNISTTrainHandler{
         defer {
             let tee = Funcs.dicToJsonStr(dict)
             response.appendBody(string: tee)
-            training = false
         }
         
         guard training == false else{
+            logger("训练中，不允许同时训练")
             dict = MNISTConstans.setMNISTError(response, error: .serviceInProgress)
             return
         }
@@ -93,6 +93,7 @@ public class MNISTTrainHandler{
                 logger("训练结果保存在: \(outputFilepath)")
                 
                 SetResponseDic.setOKMessage(response, dict: dict, message: "训练完成")
+                training = false
                 
             } catch {
                 dict = MNISTConstans.setMNISTError(response, error: .serviceError)
