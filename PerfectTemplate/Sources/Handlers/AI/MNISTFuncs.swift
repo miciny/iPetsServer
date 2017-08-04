@@ -20,7 +20,7 @@ public enum MNISTErrorType: Int{
         switch self {
         case .serviceUnavailable	: return "服务不可用，开关关闭"
         case .serviceError          : return "服务错误，读取数据失败"
-        case .serviceInProgress     : return "服务繁忙"
+        case .serviceInProgress     : return "服务繁忙，训练中"
         }
     }
     

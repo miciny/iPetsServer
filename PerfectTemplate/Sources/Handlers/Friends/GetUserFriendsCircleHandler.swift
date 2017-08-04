@@ -17,6 +17,9 @@ class GetUserFriendsCircleHandler{
     
     class func getFriendsCircle(_ request: HTTPRequest, response: HTTPResponse){
         
+        response.addHeader(.contentType, value: "application/json")
+        response.addHeader(.contentType, value: "text/html; charset=utf-8")
+        
         var dict = NSMutableDictionary()
         
         defer {

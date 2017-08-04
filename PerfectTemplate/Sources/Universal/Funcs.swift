@@ -10,7 +10,14 @@ import Foundation
 import PerfectLib  //Log
 
 func logger(_ str: String){
-    Log.info(message: "\(NSDate()): "+str)
+    
+    let time = NSDate()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    dateFormatter.locale = Locale.current // 设置时区
+    let timeStr = dateFormatter.string(from: time as Date)
+    Log.info(message: timeStr+": "+str)
+    
 }
 
 
