@@ -16,11 +16,11 @@ import PerfectLib  //Log
 
 class ResigsterAccountHandler{
     
-    static var iPetsConnector: iPetsDBConnector?
+    static var iPetsConnector: iPetsDBConnector?  //数据库操作
     
     class func resigsterAccount(_ request: HTTPRequest, response: HTTPResponse){
         
-        var dict = NSMutableDictionary()
+        var dict = NSMutableDictionary()  //返回的数据
         
         defer {
             let tee = Funcs.dicToJsonStr(dict)
@@ -28,7 +28,7 @@ class ResigsterAccountHandler{
         }
         
         //检查参数
-        dict = Funcs.checkParas(request, response: response, acceptPara: ["name", "nickname", "pw"])
+        dict = CheckParameter.checkParas(request, response: response, acceptPara: ["name", "nickname", "pw"])
         guard dict.count == 0 else {
             return
         }
@@ -42,12 +42,11 @@ class ResigsterAccountHandler{
         
         //数据库连接成功
         if iPetsConnector!.success{    // 确保执行的语句正确
-            let mysql = iPetsConnector!.mysql!
             
             //检查是否已存在
             let nickname = request.params(named: "nickname")[0]
-            if self.checkUserNickNameIsExsit(mysql: mysql, nikcname: nickname, response: response){
-                Log.info(message: "注册失败: 用户已存在")
+            if self.checkUserNickNameIsExsit(nikcname: nickname, response: response){
+                logger("注册失败: 用户已存在")
                 dict = UserFuncs.setUserExsitError(UserErrorType.userIsExsit, response: response)
                 return
             }
@@ -58,21 +57,21 @@ class ResigsterAccountHandler{
             let statement = "INSERT INTO \(UserInfoConstans.userTable) SET nickname=\"\(nickname)\", name=\"\(name)\", pw=\"\(pw)\", regist_time=NOW()"
             
             guard iPetsConnector!.excuse(query: statement) else {
-                Funcs.setDBErrorResponse(response, dict: dict)
+                SetResponseDic.setDBErrorResponse(response, dict: dict)
                 return
             }
             
-            Log.info(message: "注册成功: 用户\(nickname)注册成功")
-            Funcs.setOKMessage(response, dict: dict, str: "注册成功")
+            logger("注册成功: 用户\(nickname)注册成功")
+            SetResponseDic.setOKMessage(response, dict: dict, message: "注册成功")
             
         }else{
-            Funcs.setDBErrorResponse(response, dict: dict)
+            SetResponseDic.setDBErrorResponse(response, dict: dict)
         }
     }
 
     
     //检查是否已存在
-    private class func checkUserNickNameIsExsit(mysql: MySQL, nikcname: String, response: HTTPResponse) -> Bool{
+    private class func checkUserNickNameIsExsit(nikcname: String, response: HTTPResponse) -> Bool{
         var exist = false
         let statement = "select * from UserInfo where nickname='" + nikcname + "'"
         
@@ -82,7 +81,7 @@ class ResigsterAccountHandler{
         }
         
         // 获取返回的数据
-        let results = mysql.storeResults()!
+        let results = iPetsConnector!.mysql.storeResults()!
         
         if results.numRows() >= 1 {
             exist = true

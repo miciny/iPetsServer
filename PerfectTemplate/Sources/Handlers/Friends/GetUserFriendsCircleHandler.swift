@@ -25,7 +25,7 @@ class GetUserFriendsCircleHandler{
         }
         
         //检查参数
-        dict = Funcs.checkParas(request, response: response, acceptPara: ["uid"])
+        dict = CheckParameter.checkParas(request, response: response, acceptPara: ["uid"])
         guard dict.count == 0 else {
             return
         }
@@ -43,11 +43,12 @@ class GetUserFriendsCircleHandler{
             let mysql = iPetsConnector.mysql!
             
             
+            
             //=======================================查询用户是否存在================================================
-            let statement = "select * from \(UserInfoConstans.userTable) where " + Funcs.getQuery_And(request)
+            let statement = "select * from \(UserInfoConstans.userTable) where " + QueryManager.getQuery_And(request)
             
             guard iPetsConnector.excuse(query: statement) else {
-                Funcs.setDBErrorResponse(response, dict: dict)
+                SetResponseDic.setDBErrorResponse(response, dict: dict)
                 return
             }
             
@@ -56,32 +57,32 @@ class GetUserFriendsCircleHandler{
             
             //如果没有
             if results.numRows() == 0{
-                Log.info(message: "查询成功: 用户不存在")
+                logger("查询成功: 用户不存在")
                 dict = UserFuncs.setUserExsitError(UserErrorType.userNotExsit, response: response)
                 return
             }
             
             //有数据,用户存在
             results.close()
-            Log.info(message: "查询成功: 用户存在")
+            logger("查询成功: 用户存在")
             
             
             
             
             //=======================================查询用户的好友列表================================================
-            let statementFriendRelationship = "select friendID from \(FriendsConstans.friendsRelationshipTable) where " + Funcs.getQuery_And(request)
+            let statementFriendRelationship = "select friendID from \(FriendsConstans.friendsRelationshipTable) where " + QueryManager.getQuery_And(request)
             
             guard iPetsConnector.excuse(query: statementFriendRelationship) else {
-                Funcs.setDBErrorResponse(response, dict: dict)
+                SetResponseDic.setDBErrorResponse(response, dict: dict)
                 return
             }
             
             // 获取返回的数据
             let resultsFriendRelationship = mysql.storeResults()!
-            let friendRelationshipArray = self.progressFriendRelationshipData(resultsFriendRelationship)
+            let friendRelationshipArray = FriendsConstans.progressFriendRelationshipData(resultsFriendRelationship)
             
             results.close()
-            Log.info(message: "查询成功: 用户好友列表查询成功")
+            logger("查询成功: 用户好友列表查询成功")
             
             
             
@@ -90,20 +91,20 @@ class GetUserFriendsCircleHandler{
             let uid = request.params(named: "uid")[0]
             friendRelationshipArray.add(uid)
             
-            let statementFriendsCircle = "select * from \(FriendsConstans.friendsCircleTable) where " + Funcs.getQuery_Or(data: friendRelationshipArray, fieldName: "uid")
+            let statementFriendsCircle = "select * from \(FriendsConstans.friendsCircleTable) where " + QueryManager.getQuery_Or(data: friendRelationshipArray, fieldName: "uid")
             
             guard iPetsConnector.excuse(query: statementFriendsCircle) else {
-                Funcs.setDBErrorResponse(response, dict: dict)
+                SetResponseDic.setDBErrorResponse(response, dict: dict)
                 return
             }
             
             // 获取返回的数据
             let resultsFriendsCircle = mysql.storeResults()!
             let resultArray = self.progressFriendsCircleData(resultsFriendsCircle)
-            Funcs.setOKResponse(response, dict: dict, resultArray: resultArray)
+            SetResponseDic.setOKResponse(response, dict: dict, resultArray: resultArray)
             
         }else{
-            Funcs.setDBErrorResponse(response, dict: dict)
+            SetResponseDic.setDBErrorResponse(response, dict: dict)
         }
     }
     
@@ -144,19 +145,6 @@ class GetUserFriendsCircleHandler{
             }
         })
         
-        return resultArray
-    }
-    
-    
-    
-    private class func progressFriendRelationshipData(_ results: MySQL.Results) -> NSMutableArray{
-        
-        //setup an array to store results
-        let resultArray = NSMutableArray()
-        
-        results.forEachRow { row in
-            resultArray.add(String(Int(row[0]!)!))
-        }
         return resultArray
     }
 }

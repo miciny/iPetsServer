@@ -27,31 +27,38 @@ public class MNISTData{
 
 public class MNISTTrainHandler{
     
-    // ADD CUSTOM PATHS HERE ---------------------------------------------------
-    
-    /// Path to MNIST dataset directory.
     static let mnistDataDir = "/Users/miciny/ToGitHub/iPetsServer/PerfectTemplate/MNIST"
-    
-    /// Full filepath for trained network output file.
     static let outputFilepath = "/Users/miciny/ToGitHub/iPetsServer/PerfectTemplate/MNIST/neuralnet-mnist-trained"
     
     // -------------------------------------------------------------------------
     static let batchSize: Int = 100
     
+    static var training = false
+    
     class func startTraining(_ request: HTTPRequest, response: HTTPResponse){
         
-        let dict = NSMutableDictionary()
+        var dict = NSMutableDictionary()
         
         defer {
             let tee = Funcs.dicToJsonStr(dict)
             response.appendBody(string: tee)
+            training = false
         }
         
+        guard training == false else{
+            dict = MNISTConstans.setMNISTError(response, error: .serviceInProgress)
+            return
+        }
+        training = true
+        
         if let data = self.getData(response, dict: dict, batchSize: batchSize){
+            logger("训练数据： \(data.trainLabels.count)")
+            logger("训练数据： \(data.trainLabels[0].count)")
+            logger("训练数据： \(data.trainLabels[0][0].count)")
             
             do {
                 // 设置训练的dataset
-                Log.info(message: "创建神经网络...")
+                logger("创建神经网络...")
                 let dataset = try NeuralNet.Dataset(trainInputs: data.trainImages, trainLabels: data.trainLabels,
                                                     validationInputs: data.validationImages, validationLabels: data.validationLabels)
                 
@@ -61,15 +68,15 @@ public class MNISTTrainHandler{
                                                         batchSize: batchSize, learningRate: 0.8, momentum: 0.9)
                 let nn = try NeuralNet(structure: structure)
                 
-                Log.info(message: "----------------- 开始训练 -----------------")
+                logger("----------------- 开始训练 -----------------")
                 let (_, error) = try nn.train(dataset, maxEpochs: 50, errorThreshold: 0.02, errorFunction: .percentage) { (epoch, err) -> Bool in
                     
                     // 记录过程
                     let percCorrect = (1 - err) * 100
                     let percError = err * 100
-                    Log.info(message: "第几代:========\(epoch)========")
-                    Log.info(message: "准确度:\t\t\(percCorrect)%")
-                    Log.info(message: "错误率:\t\t\(percError)%")
+                    logger("第几代:========\(epoch)========")
+                    logger("准确度:\t\t\(percCorrect)%")
+                    logger("错误率:\t\t\(percError)%")
                     
                     // 衰减学习的速率和动量
                     nn.learningRate *= 0.97
@@ -81,25 +88,25 @@ public class MNISTTrainHandler{
                 
                 // 结束
                 try nn.save(to: URL(fileURLWithPath: outputFilepath))
-                Log.info(message: "--------------------------- 结束 ---------------------------")
-                Log.info(message: "准确度: \((1 - error) * 100)%")
-                Log.info(message: "训练结果保存在: \(outputFilepath)")
+                logger("--------------------------- 结束 ---------------------------")
+                logger("准确度: \((1 - error) * 100)%")
+                logger("训练结果保存在: \(outputFilepath)")
+                
+                SetResponseDic.setOKMessage(response, dict: dict, message: "训练完成")
                 
             } catch {
+                dict = MNISTConstans.setMNISTError(response, error: .serviceError)
                 print(error)
             }
             
+        }else{
+            dict = MNISTConstans.setMNISTError(response, error: .serviceError)
         }
-    }
-    
-    /// 从神经网络给的输入提取整数和准确度.
-    static func getLabel(from output: [Float]) -> Int? {
-        guard let max = output.max() else { return nil }
-        return (output.index(of: max)!)
     }
     
     
     static func getData(_ response: HTTPResponse, dict: NSMutableDictionary, batchSize: Int) -> MNISTData?{
+        
         let iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
         //方法执行完后，需要调用
         defer {
@@ -109,12 +116,12 @@ public class MNISTTrainHandler{
         let statement = "SELECT * FROM \(MNISTConstans.mnistDataTable)"
         
         guard iPetsConnector.excuse(query: statement) else {
-            Funcs.setDBErrorResponse(response, dict: dict)
+            SetResponseDic.setDBErrorResponse(response, dict: dict)
             return nil
         }
         
         //获取返回的数据
-        Log.info(message: "\(Date()): 开始处理数据...")
+        logger("开始处理数据...")
         let results = iPetsConnector.mysql.storeResults()!
         let data = MNISTData()
         
@@ -166,6 +173,7 @@ public class MNISTTrainHandler{
     private static func createBatches(_ set: [[Float]], size: Int) -> [[[Float]]] {
         var output = [[[Float]]]()
         let numBatches = set.count / size
+        
         for batchIdx in 0..<numBatches {
             var batch = [[Float]]()
             for item in 0..<size {

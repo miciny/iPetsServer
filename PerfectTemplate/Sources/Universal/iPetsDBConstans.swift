@@ -69,20 +69,20 @@ class iPetsDBConnector{
         }
     }
     
+    
     func closeConnect(){
-        
         if mysql != nil{
-            Log.info(message: "\(Date()): 数据库连接关闭")
+            logger("数据库连接关闭")
             mysql.close()
         }
     }
     
     func excuse(query: String) -> Bool{
         
-        Log.info(message: "\(Date()): 执行请求 "+query)
+        logger("执行请求 "+query)
         
         guard mysql.query(statement: query) else {
-            Log.info(message: "Failure: \(mysql.errorCode()) \(mysql.errorMessage())")
+            logger("Failure: \(mysql.errorCode()) \(mysql.errorMessage())")
             return false
         }
         
@@ -99,19 +99,20 @@ class iPetsDBConnector{
         let connected = mysql.connect(host: iPetsDBConnectConstans.host, user: iPetsDBConnectConstans.user, password: iPetsDBConnectConstans.password)
         
         guard connected else {
-            Log.info(message: "Failure: \(mysql.errorCode()) \(mysql.errorMessage())")
+            logger("Failure: \(mysql.errorCode()) \(mysql.errorMessage())")
             return false
         }
         
-        Log.info(message: "Success: 数据库连接成功！")
+        logger("Success: 数据库连接成功！")
         return true
     }
+    
     
     //选择数据库
     private func selectDataBase(named: String) -> Bool{
 
         guard mysql.selectDatabase(named: named) else {
-            Log.info(message: "Failure: \(mysql.errorCode()) \(mysql.errorMessage())")
+            logger("Failure: \(mysql.errorCode()) \(mysql.errorMessage())")
             return false
         }
         
@@ -119,7 +120,7 @@ class iPetsDBConnector{
             return false
         }
         
-        Log.info(message: "Success: 数据库\(named)连接成功！")
+        logger("Success: 数据库\(named)连接成功！")
         return true
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MySQL
 
 public class FriendsConstans{
     
@@ -20,6 +21,19 @@ public class FriendsConstans{
         get {
             return "FriendsCircle"
         }
+    }
+    
+    
+    //好友列表
+    class func progressFriendRelationshipData(_ results: MySQL.Results) -> NSMutableArray{
+        
+        //setup an array to store results
+        let resultArray = NSMutableArray()
+        
+        results.forEachRow { row in
+            resultArray.add(String(Int(row[0]!)!))
+        }
+        return resultArray
     }
 }
 

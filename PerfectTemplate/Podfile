@@ -1,0 +1,122 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'COpenSSL' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for COpenSSL
+
+end
+
+target 'Handlers' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for Handlers
+
+end
+
+target 'MySQL' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for MySQL
+
+end
+
+target 'NeuralNet' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for NeuralNet
+
+end
+
+target 'PerfectCHTTPParser' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for PerfectCHTTPParser
+
+end
+
+target 'PerfectCrypto' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for PerfectCrypto
+
+end
+
+target 'PerfectCZlib' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for PerfectCZlib
+
+end
+
+target 'PerfectHTTP' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for PerfectHTTP
+
+end
+
+target 'PerfectHTTPServer' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for PerfectHTTPServer
+
+end
+
+target 'PerfectLib' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for PerfectLib
+
+end
+
+target 'PerfectNet' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for PerfectNet
+
+end
+
+target 'PerfectTemplate' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for PerfectTemplate
+
+end
+
+target 'PerfectThread' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for PerfectThread
+
+end
+
+target 'Setting' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for Setting
+
+end
+
+target 'Universal' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for Universal
+
+end

@@ -16,7 +16,7 @@ class GetUserInfoHandler{
     
     class func getUserInfo(_ request: HTTPRequest, response: HTTPResponse){
         
-        var dict = NSMutableDictionary()
+        var dict = NSMutableDictionary() 
         
         defer {
             let tee = Funcs.dicToJsonStr(dict)
@@ -24,7 +24,7 @@ class GetUserInfoHandler{
         }
         
         //检查参数
-        dict = Funcs.checkParas(request, response: response, acceptPara: ["uid"])
+        dict = CheckParameter.checkParas(request, response: response, acceptPara: ["uid"])
         guard dict.count == 0 else {
             return
         }
@@ -40,10 +40,10 @@ class GetUserInfoHandler{
         if iPetsConnector.success{    // 确保执行的语句正确
             
             let mysql = iPetsConnector.mysql!
-            let statement = "select * from \(UserInfoConstans.userTable) where " + Funcs.getQuery_And(request)
+            let statement = "select * from \(UserInfoConstans.userTable) where " + QueryManager.getQuery_And(request)
             
             guard iPetsConnector.excuse(query: statement) else {
-                Funcs.setDBErrorResponse(response, dict: dict)
+                SetResponseDic.setDBErrorResponse(response, dict: dict)
                 return
             }
             
@@ -52,17 +52,17 @@ class GetUserInfoHandler{
             
             //如果没有
             if results.numRows() == 0{
-                Log.info(message: "查询失败: 用户不存在")
+                logger("查询失败: 用户不存在")
                 dict = UserFuncs.setUserExsitError(UserErrorType.userNotExsit, response: response)
                 return
             }
 
             //有数据
             let resultArray = self.progressData(results)
-            Funcs.setOKResponse(response, dict: dict, resultArray: resultArray)
+            SetResponseDic.setOKResponse(response, dict: dict, resultArray: resultArray)
             
         }else{
-            Funcs.setDBErrorResponse(response, dict: dict)
+            SetResponseDic.setDBErrorResponse(response, dict: dict)
         }
     }
     

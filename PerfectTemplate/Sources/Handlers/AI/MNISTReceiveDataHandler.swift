@@ -10,17 +10,27 @@ import Foundation
 import PerfectLib
 import PerfectHTTP
 import MySQL
-
-enum ReceiveDataResultType {
-    case ok //成功
-    case noData  //没有上传数据
-    case postFailed //上传失败
-}
+import SwiftyJSON
 
 
 class MNISTReceiveDataHandler{
     
+    
+    fileprivate static let labelEncodings: [[Float]] = [
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    ]
+    
     class func receiveData(_ request: HTTPRequest, response: HTTPResponse){
+        
         response.addHeader(.contentType, value: "application/json")
         response.addHeader(.contentType, value: "text/html; charset=utf-8")
         
@@ -33,35 +43,68 @@ class MNISTReceiveDataHandler{
         }
         
         guard let jsonStr = request.postBodyString else{
-            dict = self.getStatus(.noData, response: response)
+            dict = SetResponseDic.getStatus(.noData, response: response)
             return
         }
-        print(jsonStr)
         
-        if let dic = Funcs.jsonToDic(jsonStr: jsonStr){
-            dict = self.getStatus(.ok, response: response)
+        if let dicStr = Funcs.strToJson(jsonStr){
+            let json = JSON(dicStr)
+            let data = json["data"]
+            if let train_images = data["train_images"].string{
+                if let train_labels = data["train_labels"].int{
+                    if self.setDataToDB(train_images, train_labels: train_labels, response: response, dict: dict){
+                        
+                        //插入数据
+                        dict = SetResponseDic.getStatus(.ok, response: response)
+                        
+                        
+                    }else{
+                        dict = SetResponseDic.getStatus(.postFailed, response: response)
+                    }
+                }else{
+                    dict = SetResponseDic.getStatus(.postFailed, response: response)
+                }
+            }else{
+                dict = SetResponseDic.getStatus(.postFailed, response: response)
+            }
             
-            print(dic)
         }else{
-            dict = self.getStatus(.postFailed, response: response)
+            dict = SetResponseDic.getStatus(.postFailed, response: response)
         }
     }
     
     
-    //根据状态 返回状态数据
-    class func getStatus(_ resultStatus: ReceiveDataResultType, response: HTTPResponse) -> NSMutableDictionary{
-        let dict = NSMutableDictionary()
-        switch resultStatus {
-        case .ok:
-            Funcs.setFailMessage(response, dict: dict, str: "ok")
-            
-        case .noData:
-            Funcs.setFailMessage(response, dict: dict, str: "没有上传数据")
-            
-        case .postFailed:
-            Funcs.setFailMessage(response, dict: dict, str: "上传失败")
+    class func setDataToDB(_ train_images: String, train_labels: Int, response: HTTPResponse, dict: NSMutableDictionary) -> Bool{
+        
+        let iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
+        //方法执行完后，需要调用
+        defer {
+            iPetsConnector.closeConnect()
         }
-        return dict
+        
+        let train_label = labelEncodings[train_labels]
+        //数据库连接成功
+        logger("导入数据...")
+        if iPetsConnector.success{    // 确保执行的语句正确
+            
+            let train_imagesStr = train_images.components(separatedBy: "[")[1].components(separatedBy: "]")[0]
+            let train_imagesQuery = "train_images=\"\(train_imagesStr)\""
+            let train_labelsStr = train_label.description.components(separatedBy: "[")[1].components(separatedBy: "]")[0]
+            let train_labelsQuery = "train_labels=\"\(train_labelsStr)\""
+            
+            let validation_imagesQuery = "validation_images=NULL"
+            let validation_labelsQuery = "validation_labels=NULL"
+            
+            
+            let statement = "INSERT INTO \(MNISTConstans.mnistDataTable) SET \(train_imagesQuery), \(train_labelsQuery), \(validation_imagesQuery), \(validation_labelsQuery)"
+            
+            guard iPetsConnector.excuse(query: statement) else {
+                SetResponseDic.setDBErrorResponse(response, dict: dict)
+                return false
+            }
+        }
+        
+        return true
     }
 
 }
