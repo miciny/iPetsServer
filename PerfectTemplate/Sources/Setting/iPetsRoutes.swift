@@ -27,6 +27,8 @@ public class iPetsRoutes{
             try routes.add(method: .get, uri: "/userinfo", handler: iPetsHandlers.getUserInfoHandler())
             //注册
             try routes.add(method: .get, uri: "/register", handler: iPetsHandlers.registerUserHandler())
+            //md5
+            try routes.add(method: .get, uri: "/login/token", handler: iPetsHandlers.userLoginTokenHandler())
             
             
             

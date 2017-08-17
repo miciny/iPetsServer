@@ -120,8 +120,9 @@ class GetUserFriendsListHandler{
         results.forEachRow { row in
             let dataDic = NSMutableDictionary()
             dataDic.setValue(row[0], forKey: "uid")
-            dataDic.setValue(row[1], forKey: "nickname")
-            dataDic.setValue(row[2], forKey: "name")
+            dataDic.setValue(row[1], forKey: "username")
+            dataDic.setValue(row[2], forKey: "nickname")
+            dataDic.setValue(row[3], forKey: "name")
             
             resultArray.add(dataDic)
         }

@@ -26,7 +26,7 @@ class ResigsterAccountHandler{
         }
         
         //检查参数
-        dict = CheckParameter.checkParas(request, response: response, acceptPara: ["name", "nickname", "pw"])
+        dict = CheckParameter.checkParas(request, response: response, acceptPara: ["username","name", "nickname", "pw"])
         guard dict.count == 0 else {
             return
         }
@@ -52,7 +52,8 @@ class ResigsterAccountHandler{
             //插入数据
             let name = request.params(named: "name")[0]
             let pw = request.params(named: "pw")[0]
-            let statement = "INSERT INTO \(UserInfoConstans.userTable) SET nickname=\"\(nickname)\", name=\"\(name)\", pw=\"\(pw)\", regist_time=NOW()"
+            let username = request.params(named: "username")[0]
+            let statement = "INSERT INTO \(UserInfoConstans.userTable) SET username=\"\(username)\", nickname=\"\(nickname)\", name=\"\(name)\", pw=\"\(pw)\", regist_time=NOW()"
             
             guard iPetsConnector.excuse(query: statement) else {
                 SetResponseDic.setDBErrorResponse(response, dict: dict)

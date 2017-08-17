@@ -56,6 +56,21 @@ public class iPetsHandlers{
         }
     }
     
+    //加密
+    open static func userLoginTokenHandler() throws -> RequestHandler {
+        return {
+            request, response in
+            logger("用户token请求开始")
+            let time1 = NSDate()
+            GetMD5Handler.getMD5(request, response: response)
+            response.completed()
+            let time2 = NSDate()
+            let time = time2.timeIntervalSince(time1 as Date)
+            logger("\(time)")
+            logger("用户token请求结束")
+        }
+    }
+    
     
     
     
