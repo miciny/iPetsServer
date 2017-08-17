@@ -41,4 +41,28 @@ class UserFuncs{
         response.status = HTTPResponseStatus.badRequest
         return dict
     }
+    
+    
+    //检查是否已存在
+    class func checkUserNickNameIsExsit(nikcname: String, response: HTTPResponse) -> Bool{
+        var exist = false
+        let statement = "select * from \(UserInfoConstans.userTable) where nickname='" + nikcname + "'"
+        
+        let iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
+        //方法执行完后，需要调用
+        defer {iPetsConnector.closeConnect()}
+        
+        //执行操作，可能失败
+        guard iPetsConnector.excuse(query: statement) else {
+            return exist
+        }
+        
+        // 获取返回的数据
+        let results = iPetsConnector.mysql.storeResults()!
+        
+        if results.numRows() >= 1 {
+            exist = true
+        }
+        return exist
+    }
 }

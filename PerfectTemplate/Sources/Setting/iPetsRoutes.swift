@@ -11,12 +11,12 @@ import PerfectHTTP
 public class iPetsRoutes{
     
     class func makeRoutes() -> Routes {
-        var routes = Routes()
+        var routes = Routes(baseUri: "/v1")
         
         do{
             
             //默认
-            try routes.add(method: .get, uri: "/", handler: iPetsHandlers.indexHandler())
+            try routes.add(method: .get, uri: "/index/{uid}", handler: iPetsHandlers.indexHandler())
             try routes.add(method: .get, uri: "/index", handler: iPetsHandlers.indexHandler())
             
             
@@ -43,7 +43,7 @@ public class iPetsRoutes{
             
             
             //人工智能 开始训练
-            try routes.add(method: .get, uri: "/mcyAI/startTraining", handler: iPetsHandlers.startTrainingHandler())
+            try routes.add(method: .get, uris: ["/mcyAI/startTraining", "/mcyAI/startTrain"], handler: iPetsHandlers.startTrainingHandler())
             //人工智能 设置数据
             try routes.add(method: .get, uri: "/mcyAI/setData", handler: iPetsHandlers.startSetDataHandler())
             //人工智能 上传数据

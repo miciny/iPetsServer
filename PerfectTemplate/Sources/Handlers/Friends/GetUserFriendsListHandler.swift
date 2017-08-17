@@ -17,11 +17,8 @@ class GetUserFriendsListHandler{
     
     class func getUserFriendsList(_ request: HTTPRequest, response: HTTPResponse){
         
-        response.addHeader(.contentType, value: "application/json")
-        response.addHeader(.contentType, value: "text/html; charset=utf-8")
-        
+        response.addJsonAndUTF8Header()
         var dict = NSMutableDictionary()
-        
         defer {
             let tee = Funcs.dicToJsonStr(dict)
             response.appendBody(string: tee)

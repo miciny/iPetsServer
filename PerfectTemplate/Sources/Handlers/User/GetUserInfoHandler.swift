@@ -16,11 +16,8 @@ class GetUserInfoHandler{
     
     class func getUserInfo(_ request: HTTPRequest, response: HTTPResponse){
         
-        response.addHeader(.contentType, value: "application/json")
-        response.addHeader(.contentType, value: "text/html; charset=utf-8")
-        
-        var dict = NSMutableDictionary() 
-        
+        response.addJsonAndUTF8Header()
+        var dict = NSMutableDictionary()
         defer {
             let tee = Funcs.dicToJsonStr(dict)
             response.appendBody(string: tee)
@@ -34,15 +31,11 @@ class GetUserInfoHandler{
         
         //检查之后
         let iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
-        //方法执行完后，需要调用
-        defer {
-            iPetsConnector.closeConnect()
-        }
+        defer {iPetsConnector.closeConnect()}                           //方法执行完后，需要调用
         
         //数据库连接成功
         if iPetsConnector.success{    // 确保执行的语句正确
             
-            let mysql = iPetsConnector.mysql!
             let statement = "select * from \(UserInfoConstans.userTable) where " + QueryManager.getQuery_And(request)
             
             guard iPetsConnector.excuse(query: statement) else {
@@ -51,7 +44,7 @@ class GetUserInfoHandler{
             }
             
             // 获取返回的数据
-            let results = mysql.storeResults()!
+            let results = iPetsConnector.mysql.storeResults()!
             
             //如果没有
             if results.numRows() == 0{

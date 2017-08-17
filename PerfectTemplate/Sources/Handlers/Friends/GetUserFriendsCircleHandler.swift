@@ -17,11 +17,8 @@ class GetUserFriendsCircleHandler{
     
     class func getFriendsCircle(_ request: HTTPRequest, response: HTTPResponse){
         
-        response.addHeader(.contentType, value: "application/json")
-        response.addHeader(.contentType, value: "text/html; charset=utf-8")
-        
+        response.addJsonAndUTF8Header()
         var dict = NSMutableDictionary()
-        
         defer {
             let tee = Funcs.dicToJsonStr(dict)
             response.appendBody(string: tee)
@@ -36,9 +33,7 @@ class GetUserFriendsCircleHandler{
         //检查之后
         let iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
         //方法执行完后，需要调用
-        defer {
-            iPetsConnector.closeConnect()
-        }
+        defer {iPetsConnector.closeConnect()}
         
         //数据库连接成功
         if iPetsConnector.success{    // 确保执行的语句正确
@@ -112,7 +107,54 @@ class GetUserFriendsCircleHandler{
     }
     
     
+    //点赞
+    private class func getLikeDic(mid: Int) -> NSMutableArray?{
+        
+        let iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
+        //方法执行完后，需要调用
+        defer {iPetsConnector.closeConnect()}
+        
+        //查询点赞的uid
+        let statement = "select uid from \(FriendsConstans.friendsLikeTable) where mid=\(mid)"
+        guard iPetsConnector.excuse(query: statement) else {return nil}
+        
+        let dic = NSMutableArray()
+        
+        let likeResult = iPetsConnector.mysql.storeResults()!
+        
+        likeResult.forEachRow { (row) in
+            let uid = row[0]!
+            
+            //每个uid查名字
+            let ustatement = "select name from \(UserInfoConstans.userTable) where uid=\(uid)"
+            guard iPetsConnector.excuse(query: ustatement) else {return}
+            
+            let userNameResult = iPetsConnector.mysql.storeResults()!
+            userNameResult.forEachRow(callback: { (urow) in
+                
+                let dataDic = NSMutableDictionary()
+                let name = urow[0]!
+                
+                dataDic.setValue(uid, forKey: "uid")
+                dataDic.setValue(name, forKey: "name")
+                
+                dic.add(dataDic)
+            })
+        }
+        
+        return dic.count==0 ? nil : dic
+    }
     
+    //图片分解
+    private class func getImageUrls(imageUrls: String) -> NSMutableArray{
+        let dic = NSMutableArray()
+        let array = imageUrls.components(separatedBy: "\n")
+        dic.addObjects(from: array)
+        return dic
+    }
+    
+    
+    //处理数据
     private class func progressFriendsCircleData(_ results: MySQL.Results) -> NSMutableArray{
         
         //setup an array to store results
@@ -120,16 +162,26 @@ class GetUserFriendsCircleHandler{
         
         results.forEachRow { row in
             let dataDic = NSMutableDictionary()
+            dataDic.setValue(row[0], forKey: "mid")
             dataDic.setValue(row[1], forKey: "uid")
             dataDic.setValue(row[2], forKey: "nickname")
             dataDic.setValue(row[3], forKey: "show_name")
             dataDic.setValue(row[4], forKey: "iconUrl")
             dataDic.setValue(row[5], forKey: "type")
             dataDic.setValue(row[6], forKey: "text")
-            dataDic.setValue(row[7], forKey: "imageUrls")
             dataDic.setValue(row[8], forKey: "videoUrl")
             dataDic.setValue(row[9], forKey: "videoImageUrl")
             dataDic.setValue(row[10], forKey: "time")
+            
+            
+            if let imageUrls = row[7]{
+                let images = self.getImageUrls(imageUrls: imageUrls)
+                dataDic.setValue(images, forKey: "imageUrls")
+            }
+            
+            if let like = self.getLikeDic(mid: Int(row[0]!)!){
+                dataDic.setValue(like, forKey: "likes")
+            }
             
             resultArray.add(dataDic)
         }

@@ -23,6 +23,12 @@ public class FriendsConstans{
         }
     }
     
+    class var friendsLikeTable: String{
+        get {
+            return "FriendsLike"
+        }
+    }
+    
     
     //好友列表
     class func progressFriendRelationshipData(_ results: MySQL.Results) -> NSMutableArray{

@@ -16,15 +16,10 @@ import PerfectLib  //Log
 
 class ResigsterAccountHandler{
     
-    static var iPetsConnector: iPetsDBConnector?  //数据库操作
-    
     class func resigsterAccount(_ request: HTTPRequest, response: HTTPResponse){
         
-        response.addHeader(.contentType, value: "application/json")
-        response.addHeader(.contentType, value: "text/html; charset=utf-8")
-        
+        response.addJsonAndUTF8Header()
         var dict = NSMutableDictionary()  //返回的数据
-        
         defer {
             let tee = Funcs.dicToJsonStr(dict)
             response.appendBody(string: tee)
@@ -37,18 +32,18 @@ class ResigsterAccountHandler{
         }
         
         //检查之后
-        iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
+        let iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
         //方法执行完后，需要调用
         defer {
-            iPetsConnector!.closeConnect()
+            iPetsConnector.closeConnect()
         }
         
         //数据库连接成功
-        if iPetsConnector!.success{    // 确保执行的语句正确
+        if iPetsConnector.success{    // 确保执行的语句正确
             
             //检查是否已存在
             let nickname = request.params(named: "nickname")[0]
-            if self.checkUserNickNameIsExsit(nikcname: nickname, response: response){
+            if UserFuncs.checkUserNickNameIsExsit(nikcname: nickname, response: response){
                 logger("注册失败: 用户已存在")
                 dict = UserFuncs.setUserExsitError(UserErrorType.userIsExsit, response: response)
                 return
@@ -59,7 +54,7 @@ class ResigsterAccountHandler{
             let pw = request.params(named: "pw")[0]
             let statement = "INSERT INTO \(UserInfoConstans.userTable) SET nickname=\"\(nickname)\", name=\"\(name)\", pw=\"\(pw)\", regist_time=NOW()"
             
-            guard iPetsConnector!.excuse(query: statement) else {
+            guard iPetsConnector.excuse(query: statement) else {
                 SetResponseDic.setDBErrorResponse(response, dict: dict)
                 return
             }
@@ -70,25 +65,5 @@ class ResigsterAccountHandler{
         }else{
             SetResponseDic.setDBErrorResponse(response, dict: dict)
         }
-    }
-
-    
-    //检查是否已存在
-    private class func checkUserNickNameIsExsit(nikcname: String, response: HTTPResponse) -> Bool{
-        var exist = false
-        let statement = "select * from UserInfo where nickname='" + nikcname + "'"
-        
-        //执行操作，可能失败
-        guard iPetsConnector!.excuse(query: statement) else {
-            return exist
-        }
-        
-        // 获取返回的数据
-        let results = iPetsConnector!.mysql.storeResults()!
-        
-        if results.numRows() >= 1 {
-            exist = true
-        }
-        return exist
     }
 }

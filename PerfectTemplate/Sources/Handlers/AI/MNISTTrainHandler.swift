@@ -32,13 +32,11 @@ public class MNISTTrainHandler{
     
     // -------------------------------------------------------------------------
     static let batchSize: Int = 100
-    
     static var training = false
     
     class func startTraining(_ request: HTTPRequest, response: HTTPResponse){
         
-        response.addHeader(.contentType, value: "application/json")
-        response.addHeader(.contentType, value: "text/html; charset=utf-8")
+        response.addJsonAndUTF8Header()
         
         var dict = NSMutableDictionary()
         
@@ -76,10 +74,8 @@ public class MNISTTrainHandler{
                     
                     // 记录过程
                     let percCorrect = (1 - err) * 100
-                    let percError = err * 100
                     logger("第几代:========\(epoch)========")
                     logger("准确度:\t\t\(percCorrect)%")
-                    logger("错误率:\t\t\(percError)%")
                     
                     // 衰减学习的速率和动量
                     nn.learningRate *= 0.97
