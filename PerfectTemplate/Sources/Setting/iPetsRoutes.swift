@@ -52,6 +52,19 @@ public class iPetsRoutes{
             try routes.add(method: .post, uri: "/mcyAI/uploadData", handler: iPetsHandlers.receiveTrainDataHandler())
             
             
+            
+            
+            
+        //======================================================================================
+            //web
+            routes.add(method: .get, uri: "web/", handler: WebHandlers.indexHandlerGet)
+            routes.add(method: .get, uri: "web/nocsrf", handler: WebHandlers.formNoCSRF)
+            routes.add(method: .get, uri: "web/withcsrf", handler: WebHandlers.formWithCSRF)
+            routes.add(method: .post, uris: ["web/nocsrf", "web/withcsrf"], handler: WebHandlers.formReceive)
+            // for CORS
+            routes.add(method: .get, uri: "web/cors", handler: WebHandlers.CORSHandlerGet)
+            
+            
         }catch {
             print(error)
         }

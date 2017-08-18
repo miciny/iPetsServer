@@ -10,6 +10,7 @@ import Foundation
 import PerfectHTTP
 import MySQL
 import PerfectLib  //Log
+import PerfectSession
 
 
 class GetUserInfoHandler{
