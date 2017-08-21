@@ -36,7 +36,7 @@ let server = HTTPServer()
 
 
 SessionConfig.name = "Token"
-SessionConfig.idle = 6  //时效期限：整数，单位是秒
+SessionConfig.idle = 60  //时效期限：整数，单位是秒
 
 // Optional
 SessionConfig.cookieDomain = "localhost"
@@ -49,12 +49,12 @@ SessionConfig.CORS.acceptableHostnames.append("http://www.test-cors.org")
 //SessionConfig.CORS.acceptableHostnames.append("*.test-cors.org")
 SessionConfig.CORS.maxAge = 60
 
-MySQLSessionConnector.host = "localhost"
-MySQLSessionConnector.port = 3306
-MySQLSessionConnector.username = "root"
-MySQLSessionConnector.password = "Miciny!@#$%^&*()123"
-MySQLSessionConnector.database = "iPetsDB"
-MySQLSessionConnector.table = "sessions"
+MySQLSessionConnector.host = iPetsDBConnectConstans.host
+MySQLSessionConnector.port = Int(iPetsDBConnectConstans.port)!
+MySQLSessionConnector.username = iPetsDBConnectConstans.user
+MySQLSessionConnector.password = iPetsDBConnectConstans.password
+MySQLSessionConnector.database = iPetsDBConnectConstans.schema
+MySQLSessionConnector.table = "session"
 
 let sessionDriver = SessionMySQLDriver()
 

@@ -43,7 +43,7 @@ class GetUserFriendsCircleHandler{
             
             
             //=======================================查询用户是否存在================================================
-            let statement = "select * from \(UserInfoConstans.userTable) where " + QueryManager.getQuery_And(request)
+            let statement = "select uid from \(UserInfoConstans.userTable) where " + QueryManager.getQuery_And(request)
             
             guard iPetsConnector.excuse(query: statement) else {
                 SetResponseDic.setDBErrorResponse(response, dict: dict)
@@ -89,7 +89,7 @@ class GetUserFriendsCircleHandler{
             let uid = request.params(named: "uid")[0]
             friendRelationshipArray.add(uid)
             
-            let statementFriendsCircle = "select * from \(FriendsConstans.friendsCircleTable) where " + QueryManager.getQuery_Or(data: friendRelationshipArray, fieldName: "uid")
+            let statementFriendsCircle = "select  id, uid, nickname, show_name, icon, type, text, images_urls, video_url, video_image_url, update_time from \(FriendsConstans.friendsCircleTable) where " + QueryManager.getQuery_Or(data: friendRelationshipArray, fieldName: "uid")
             
             guard iPetsConnector.excuse(query: statementFriendsCircle) else {
                 SetResponseDic.setDBErrorResponse(response, dict: dict)
@@ -107,7 +107,7 @@ class GetUserFriendsCircleHandler{
     }
     
     
-    //点赞
+    //=========================点赞=======================
     private class func getLikeDic(mid: Int) -> NSMutableArray?{
         
         let iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
@@ -172,7 +172,6 @@ class GetUserFriendsCircleHandler{
             dataDic.setValue(row[8], forKey: "videoUrl")
             dataDic.setValue(row[9], forKey: "videoImageUrl")
             dataDic.setValue(row[10], forKey: "time")
-            
             
             if let imageUrls = row[7]{
                 let images = self.getImageUrls(imageUrls: imageUrls)

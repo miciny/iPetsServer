@@ -14,6 +14,8 @@ import TurnstileCrypto
 public class WebHandlers {
     /* =================================================================================================================
      Index
+     需要客户端传token 加入到 header
+     (request.session?._state ?? "no token")  //通过状态判断是不是新对话，new的话就说吗对话过期，resume表示没过期
      ================================================================================================================= */
     
     open static func indexHandlerGet(request: HTTPRequest, _ response: HTTPResponse) {
@@ -72,13 +74,7 @@ public class WebHandlers {
      formWithCSRF
      ================================================================================================================= */
     open static func formWithCSRF(request: HTTPRequest, _ response: HTTPResponse) {
-        
-        request.headers.forEach { (name) in
-            if name.0.standardName == "token" {
-                let token = name.1
-                print(token)
-            }
-        }
+        print(request.session?._state ?? "no token")  //通过状态判断是不是新对话，new的话就说吗对话过期，resume表示没过期
         
         let t = request.session?.data["csrf"] as? String ?? ""
         let ip = request.session?.ipaddress

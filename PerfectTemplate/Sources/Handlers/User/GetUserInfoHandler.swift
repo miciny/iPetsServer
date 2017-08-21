@@ -37,7 +37,7 @@ class GetUserInfoHandler{
         //数据库连接成功
         if iPetsConnector.success{    // 确保执行的语句正确
             
-            let statement = "select * from \(UserInfoConstans.userTable) where " + QueryManager.getQuery_And(request)
+            let statement = "select uid, username, nickname, name from \(UserInfoConstans.userTable) where " + QueryManager.getQuery_And(request)
             
             guard iPetsConnector.excuse(query: statement) else {
                 SetResponseDic.setDBErrorResponse(response, dict: dict)

@@ -44,7 +44,7 @@ class GetUserFriendsListHandler{
             
             
             //=======================================查询用户是否存在================================================
-            let statement = "select * from \(UserInfoConstans.userTable) where " + QueryManager.getQuery_And(request)
+            let statement = "select uid from \(UserInfoConstans.userTable) where " + QueryManager.getQuery_And(request)
             
             guard iPetsConnector.excuse(query: statement) else {
                 SetResponseDic.setDBErrorResponse(response, dict: dict)
@@ -93,7 +93,7 @@ class GetUserFriendsListHandler{
             
             //=======================================查询用户的好友的信息================================================
             
-            let statementFriendsList = "select * from \(UserInfoConstans.userTable) where " + QueryManager.getQuery_Or(data: friendRelationshipArray, fieldName: "uid")
+            let statementFriendsList = "select  uid, username, nickname, name from \(UserInfoConstans.userTable) where " + QueryManager.getQuery_Or(data: friendRelationshipArray, fieldName: "uid")
             
             guard iPetsConnector.excuse(query: statementFriendsList) else {
                 SetResponseDic.setDBErrorResponse(response, dict: dict)
