@@ -31,6 +31,7 @@ let package = Package(
         .Package(url: "https://github.com/PerfectlySoft/Perfect-Session.git", majorVersion: 1),
         .Package(url: "https://github.com/PerfectlySoft/Perfect-Session-MySQL.git", majorVersion: 1),
         .Package(url: "https://github.com/stormpath/Turnstile-Perfect.git", majorVersion:1),
+        .Package(url: "https://github.com/PerfectlySoft/Perfect-Mustache.git", majorVersion:2),
         .Package(url: "https://github.com/PerfectlySoft/Perfect-RequestLogger.git", majorVersion: 0)
     ]
 )

@@ -56,13 +56,16 @@ MySQLSessionConnector.password = iPetsDBConnectConstans.password
 MySQLSessionConnector.database = iPetsDBConnectConstans.schema
 MySQLSessionConnector.table = "session"
 
-let sessionDriver = SessionMySQLDriver()
 
+let sessionDriver = SessionMySQLDriver()
 server.setRequestFilters([sessionDriver.requestFilter])
 server.setResponseFilters([sessionDriver.responseFilter])
 
-let route = iPetsRoutes.makeRoutes()
-server.addRoutes(route)
+//route
+let apiRoute = iPetsRoutes.makeAPIRoutes()
+let webRoute = iPetsRoutes.makeWebRoutes()
+server.addRoutes(apiRoute)
+server.addRoutes(webRoute)
 server.serverPort = 8181
 
 do {

@@ -17,4 +17,7 @@ extension HTTPResponse{
         self.addHeader(.contentType, value: "text/html; charset=utf-8")
     }
     
+    func addHtmlHeader(){
+        self.setHeader(.contentType, value: "text/html")
+    }
 }

@@ -11,7 +11,7 @@ import PerfectHTTP
 import PerfectSession
 import TurnstileCrypto
 
-public class WebHandlers {
+public class CORSWebHandlers {
     /* =================================================================================================================
      Index
      需要客户端传token 加入到 header
@@ -74,7 +74,7 @@ public class WebHandlers {
      formWithCSRF
      ================================================================================================================= */
     open static func formWithCSRF(request: HTTPRequest, _ response: HTTPResponse) {
-        print(request.session?._state ?? "no token")  //通过状态判断是不是新对话，new的话就说吗对话过期，resume表示没过期
+        //print(request.session?._state ?? "no token")  //通过状态判断是不是新对话，new的话就说吗对话过期，resume表示没过期
         
         let t = request.session?.data["csrf"] as? String ?? ""
         let ip = request.session?.ipaddress
