@@ -71,6 +71,17 @@ public class iPetsRoutes{
         routes.add(method: .post, uris: ["/nocsrf", "/withcsrf"], handler: CORSWebHandlers.formReceive)
         routes.add(method: .get, uri: "/cors", handler: CORSWebHandlers.CORSHandlerGet)
         
+        
+        
+        //login
+        routes.add(method: .get, uri: "/auth", handler: TurnstileAuthHandlers.indexHandler)
+        routes.add(method: .get, uri: "/login", handler: TurnstileAuthHandlers.loginHandlerGet)
+        routes.add(method: .post, uri: "/login", handler: TurnstileAuthHandlers.loginHandlerPost)
+        routes.add(method: .get, uri: "/register", handler: TurnstileAuthHandlers.registerGet)
+        routes.add(method: .post, uri: "/register", handler: TurnstileAuthHandlers.registerPost)
+        routes.add(method: .get, uri: "/me", handler: TurnstileAuthHandlers.getMyInfo)
+        routes.add(method: .post, uri: "/logout", handler: TurnstileAuthHandlers.logout)
+        
         return routes
     }
 }

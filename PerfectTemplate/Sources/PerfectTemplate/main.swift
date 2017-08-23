@@ -22,6 +22,7 @@ import PerfectHTTP
 import PerfectHTTPServer
 import PerfectSession
 import PerfectSessionMySQL
+import TurnstilePerfect
 
 let server = HTTPServer()
 
@@ -60,6 +61,16 @@ server.setRequestFilters([(myLogger, .high)])
 // 最后增加低优先级的过滤器
 server.setResponseFilters([(myLogger, .low)])
 
+//================================================   turnstile 过滤器
+let accountStore = UserAccountStore()
+let turnstile = TurnstilePerfect(sessionManager: ExampleSessionManager(accountStore: accountStore), realm: ExampleRealm(accountStore: accountStore))
+var webroot: String
+webroot = "/" + #file.characters.split(separator: "/").map(String.init).dropLast(3).joined(separator: "/")
+webroot += "/WebRootSources"
+server.documentRoot = webroot
+
+server.setRequestFilters([turnstile.requestFilter])
+server.setResponseFilters([turnstile.responseFilter])
 
 //================================================   route
 let apiRoute = iPetsRoutes.makeAPIRoutes()
