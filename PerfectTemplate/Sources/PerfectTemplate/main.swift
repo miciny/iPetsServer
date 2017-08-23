@@ -25,16 +25,8 @@ import PerfectSessionMySQL
 
 let server = HTTPServer()
 
-// 初始化一个日志记录器
-//let myLogger = RequestLogger()
-// 增加过滤器
-// 首先增加高优先级的过滤器
-//server.setRequestFilters([(myLogger, .high)])
-// 最后增加低优先级的过滤器
-//server.setResponseFilters([(myLogger, .low)])
 
-
-
+//================================================   session 过滤器
 SessionConfig.name = "Token"
 SessionConfig.idle = 60  //时效期限：整数，单位是秒
 
@@ -56,12 +48,20 @@ MySQLSessionConnector.password = iPetsDBConnectConstans.password
 MySQLSessionConnector.database = iPetsDBConnectConstans.schema
 MySQLSessionConnector.table = "session"
 
-
 let sessionDriver = SessionMySQLDriver()
 server.setRequestFilters([sessionDriver.requestFilter])
 server.setResponseFilters([sessionDriver.responseFilter])
 
-//route
+
+//================================================   日志记录器
+let myLogger = RequestLogger()
+// 首先增加高优先级的过滤器
+server.setRequestFilters([(myLogger, .high)])
+// 最后增加低优先级的过滤器
+server.setResponseFilters([(myLogger, .low)])
+
+
+//================================================   route
 let apiRoute = iPetsRoutes.makeAPIRoutes()
 let webRoute = iPetsRoutes.makeWebRoutes()
 server.addRoutes(apiRoute)
