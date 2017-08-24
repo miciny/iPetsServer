@@ -16,7 +16,7 @@ import SwiftRandom
 public struct RequestLogFile {
 	private init(){}
 	/// Holds the location of the log file.
-	public static var location = "/var/log/perfectLog.log"
+	public static var location = "/var/log/perfectTemplateLog.log"
 }
 
 
@@ -75,7 +75,7 @@ public class RequestLogger: HTTPRequestFilter, HTTPResponseFilter {
 		let started = moment(start/1000)
 
 		var useFile = RequestLogFile.location
-		if useFile.isEmpty { useFile = "/var/log/perfectLog.log" }
+		if useFile.isEmpty { useFile = "/var/log/perfectTemplateLog.log" }
 
 		LogFile.info("[\(hostname)/\(requestID)] \(started) \"\(method) \(requestURL) \(requestProtocol)/\(protocolVersion.0).\(protocolVersion.1)\" from \(remoteAddress) - \(status) \(length)B in \(interval)ms", logFile: useFile)
 

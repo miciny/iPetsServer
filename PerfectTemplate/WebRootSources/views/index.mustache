@@ -7,9 +7,9 @@
 {{#account}}
 <h1>Hi {{username}}!</h1>
 <p>Thanks for trying out this Turnstile demo! Turnstile is the easiest way to set up authentication with Perfect. </p>
-<p>We've generated a set of API Keys for you, which you can use to grab your full profile data via Basic Authentication to <a href="/api/me"><code>/api/me</code></a>. Your API Key ID is: <code>{{api_key_id}}</code>, and secret is: <code>{{api_key_secret}}</code>.</p>
+<p>We've generated a set of API Keys for you, which you can use to grab your full profile data via Basic Authentication to <a href="/web/me"><code>/web/me</code></a>. Your API Key ID is: <code>{{api_key_id}}</code>, and secret is: <code>{{api_key_secret}}</code>.</p>
 <p>You can use curl to test the API endpoint: </p>
-<p><pre>curl -u {{api_key_id}}:{{api_key_secret}} {{baseURL}}/api/me</pre></p>
+<p><pre>curl -u {{api_key_id}}:{{api_key_secret}} {{baseURL}}/web/me</pre></p>
 {{/account}}
 {{/authenticated}}
 

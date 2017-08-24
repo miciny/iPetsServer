@@ -49,9 +49,9 @@ MySQLSessionConnector.password = iPetsDBConnectConstans.password
 MySQLSessionConnector.database = iPetsDBConnectConstans.schema
 MySQLSessionConnector.table = "session"
 
-let sessionDriver = SessionMySQLDriver()
-server.setRequestFilters([sessionDriver.requestFilter])
-server.setResponseFilters([sessionDriver.responseFilter])
+//let sessionDriver = SessionMySQLDriver()
+//server.setRequestFilters([sessionDriver.requestFilter])
+//server.setResponseFilters([sessionDriver.responseFilter])
 
 
 //================================================   日志记录器

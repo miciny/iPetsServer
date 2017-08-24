@@ -53,7 +53,7 @@ public class TurnstileAuthHandlers {
         
         do {
             try request.user.login(credentials: credentials, persist: true)
-            response.redirect(path: "/")
+            response.redirect(path: "/web/auth")
         } catch {
             response.render(template: "login", context: ["flash": "Invalid Username or Password"])
         }
@@ -61,6 +61,8 @@ public class TurnstileAuthHandlers {
         response.completed()
         
     }
+    
+    
     
     /* =================================================================================================================
      register get
@@ -70,6 +72,7 @@ public class TurnstileAuthHandlers {
         response.completed()
         
     }
+    
     
     /* =================================================================================================================
      register post
@@ -86,6 +89,7 @@ public class TurnstileAuthHandlers {
             try request.user.register(credentials: credentials)
             try request.user.login(credentials: credentials, persist: true)
             response.redirect(path: "/web/auth")
+
         } catch let e as TurnstileError {
             response.render(template: "register", context: ["flash": e.description])
         } catch {
@@ -94,8 +98,6 @@ public class TurnstileAuthHandlers {
         
         response.completed()
     }
-    
-    
     
     
     /* =================================================================================================================
@@ -109,12 +111,12 @@ public class TurnstileAuthHandlers {
             return
         }
         response.appendBody(string: account.json)
+        response.completed()
     }
     
     
     open static func logout(request: HTTPRequest, _ response: HTTPResponse){
         request.user.logout()
-        
         response.redirect(path: "/web/auth")
     }
     

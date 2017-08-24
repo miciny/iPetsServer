@@ -43,7 +43,7 @@ class ResigsterAccountHandler{
             
             //检查是否已存在
             let nickname = request.params(named: "nickname")[0]
-            if UserFuncs.checkUserNickNameIsExsit(nikcname: nickname, response: response){
+            if UserFuncs.checkUserNickNameIsExsit(nickname){
                 logger("注册失败: 用户已存在")
                 dict = UserFuncs.setUserExsitError(UserErrorType.userIsExsit, response: response)
                 return

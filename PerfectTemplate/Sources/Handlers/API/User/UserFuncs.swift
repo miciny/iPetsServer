@@ -44,7 +44,7 @@ class UserFuncs{
     
     
     //检查是否已存在
-    class func checkUserNickNameIsExsit(nikcname: String, response: HTTPResponse) -> Bool{
+    class func checkUserNickNameIsExsit(_ nikcname: String) -> Bool{
         var exist = false
         let statement = "select * from \(UserInfoConstans.userTable) where nickname='" + nikcname + "'"
         
@@ -65,4 +65,45 @@ class UserFuncs{
         }
         return exist
     }
+    
+    //注册  nil已存在, false注册失败, true注册成功
+    class func registeUser(nickname: String, username: String, pw: String) -> Bool?{
+        
+        let iPetsConnector = iPetsDBConnector(dbName: iPetsDBConnectConstans.schema)
+        //方法执行完后，需要调用
+        defer {iPetsConnector.closeConnect()}
+        
+        //检查是否已存在
+        if UserFuncs.checkUserNickNameIsExsit(nickname){
+            logger("注册失败: 用户已存在")
+            return nil
+        }
+        
+        //插入数据
+        let name = username
+        let statement = "INSERT INTO \(UserInfoConstans.userTable) SET username=\"\(username)\", nickname=\"\(nickname)\", name=\"\(name)\", pw=\"\(pw)\", regist_time=NOW()"
+        
+        guard iPetsConnector.excuse(query: statement) else {
+            return false
+        }
+        
+        logger("注册成功: 用户\(nickname)注册成功")
+        return true
+    }
+
 }
+
+
+
+
+//链接数据库，插入数据
+//if let s = UserFuncs.registeUser(nickname: username, username: username, pw: pw!) {
+//    if s{
+//        response.redirect(path: "/web/auth")
+//    }else{
+//        response.render(template: "register", context: ["flash": "database error"])
+//    }
+//    
+//}else{
+//    response.render(template: "register", context: ["flash": "username already exsit"])
+//}
